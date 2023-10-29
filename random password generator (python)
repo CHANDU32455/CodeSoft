@@ -1,0 +1,74 @@
+import tkinter as tk
+from tkinter import messagebox
+import random
+import string
+
+class PasswordGeneratorApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Password Generator")
+        self.root.geometry("1100x600")
+
+        root.configure(bg="#008080")
+        self.label = tk.Label(root, text="WELCOME TO RANDOM PASSWORD GENERATOR", font=("Helvetica", 25))
+        self.label.place(x=150, y=50)
+
+        self.label = tk.Label(root, text="Enter Password Length (10-50):", font=("Helvetica", 14), bg="#3498db")
+        self.label.place(x=100, y=250)
+
+        self.password_length_input = tk.Entry(root, font=("Helvetica", 14))
+        self.password_length_input.place(x=400, y=250)
+        self.password_length_input.bind('<Return>', self.generate_password)  # Bind the Enter key press event
+
+        self.generate_button = tk.Button(root, text="Generate Password", font=("Helvetica", 14,), command=self.generate_password, bg="#3498db")
+        self.generate_button.place(x=300, y=380)
+
+    def generate_password(self):
+        password_length = self.password_length_input.get()
+
+        if not password_length:
+            messagebox.showinfo("Error", "Please enter password length first.")
+            return
+        if not password_length.isdigit():
+            messagebox.showinfo("Error", "Please enter a valid number for password length.")
+            return
+        password_length = int(password_length)
+
+        if password_length < 10 or password_length > 50:
+            messagebox.showinfo("Error", "Please choose wisely (between 10 and 50).")
+            return
+
+        password = self.generate_random_password(password_length)
+
+        password_dialog = tk.Toplevel()
+        password_dialog.title("Generated Password")
+        password_dialog.geometry("400x250")
+
+        password_label = tk.Label(password_dialog, text="Generated Password:", font=("Helvetica", 14))
+        password_label.place(x=70, y=10)
+
+        password_display = tk.Entry(password_dialog, font=("Helvetica", 14))
+        password_display.insert(0, password)
+        password_display.configure(state="readonly")
+        password_display.place(x=70, y=40)
+
+        copy_button = tk.Button(password_dialog, text="Copy", font=("Helvetica", 14),
+                                command=lambda: self.copy_password(password))
+        copy_button.place(x=100, y=140)
+
+
+    def copy_password(self, password):
+        self.root.clipboard_clear()
+        self.root.clipboard_append(password)
+        messagebox.showinfo("COOL", "YOU GOT THE PASSWORD ON YOUR CLIPBOARD.")
+        self.root.update()
+
+    def generate_random_password(self, length):
+        characters = string.ascii_letters + string.digits + string.punctuation
+        password = ''.join(random.choice(characters) for i in range(length))
+        return password
+
+if __name__ == '__main__':
+    root = tk.Tk()
+    app = PasswordGeneratorApp(root)
+    root.mainloop()
