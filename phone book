@@ -139,24 +139,16 @@ class contactbookapp:
         submit_button = tk.Button(main, text="Save", font=("Helvetica", 15), command=save_edited_contact)
         submit_button.place(x=60, y=200)
 
-    def look_all_contacts(self):
+        def look_all_contacts(self):
+        # Clear the current list of contacts in the Listbox
+        self.task_list.delete(0, tk.END)
+
         if not contacts_data:
             messagebox.showinfo("No Contacts", "There are no contacts to display.")
             return
 
-        all_contacts_window = tk.Toplevel(root)
-        all_contacts_window.title("All Contacts")
-        all_contacts_window.geometry("400x400")
-
-        text_area = tk.Text(all_contacts_window, wrap=tk.WORD)
-        text_area.pack(fill=tk.BOTH, expand=True)
-
         for contact in contacts_data:
-            text_area.insert(tk.END, f"Name: {contact['Name']}\n")
-            text_area.insert(tk.END, f"Phone: {contact['Phone']}\n")
-            text_area.insert(tk.END, f"Email: {contact['Email']}\n")
-            text_area.insert(tk.END, f"Address: {contact['Address']}\n\n")
-            self.load_contacts_from_file()
+            self.task_list.insert(tk.END, f"Name: {contact['Name']}         Phone: {contact['Phone']}")
 
     def save_contacts_to_file(self):
         # Save contacts to a JSON file
