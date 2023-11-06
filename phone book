@@ -139,7 +139,7 @@ class contactbookapp:
         submit_button = tk.Button(main, text="Save", font=("Helvetica", 15), command=save_edited_contact)
         submit_button.place(x=60, y=200)
 
-        def look_all_contacts(self):
+    def look_all_contacts(self):
         # Clear the current list of contacts in the Listbox
         self.task_list.delete(0, tk.END)
 
